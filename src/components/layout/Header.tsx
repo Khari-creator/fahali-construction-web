@@ -50,8 +50,9 @@ export default function Header() {
             <DropdownItem href="/projects/bungalows" label="Bungalows" />
           </DesktopDropdown>
 
-          <NavLink href="/about">About Us</NavLink>
-          <NavLink href="/contact">Contact Us</NavLink>
+          <NavLink href="/about">About</NavLink>
+          <NavLink href="/contact">Contact</NavLink>
+           <NavLink href="/admin/projects">Admin</NavLink>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -127,11 +128,14 @@ export default function Header() {
           )}
 
           <MobileLink href="/about" onClick={() => setMenuOpen(false)}>
-            About Us
+            About
           </MobileLink>
 
           <MobileLink href="/contact" onClick={() => setMenuOpen(false)}>
-            Contact Us
+            Contact
+          </MobileLink>
+          <MobileLink href="/admin" onClick={() => setMenuOpen(false)}>
+            Admin
           </MobileLink>
         </div>
       )}

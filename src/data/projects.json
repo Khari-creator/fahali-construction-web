@@ -1,0 +1,44 @@
+[
+  {
+    "slug": "bungalow(3bdm)",
+    "title": "Bungalow(3bdm)",
+    "category": "Bungalows",
+    "featured": true,
+    "image": "/images/bungalow(3bdm)-1768305181956.jpg"
+  },
+  {
+    "slug": "5 Bedroom Bungalow",
+    "title": "Modern Bungalow",
+    "category": "Bungalows",
+    "image": "/images/1768306996927-bungalow-2.jpg",
+    "featured": true
+  },
+  {
+    "slug": "4 Bedrrom ",
+    "title": "Modern Manssionate",
+    "category": "Maisonettes",
+    "image": "/images/1768307311108-modern-villa-1768304532839.jpg",
+    "featured": true
+  },
+  {
+    "slug": "5 Bedroom Manor",
+    "title": "5 Bedroom Manor",
+    "category": "Maisonettes",
+    "image": "/images/1768367776112-4-bedroom-1768303310036.jpg",
+    "featured": true
+  },
+  {
+    "slug": "Luxury Mainsionette",
+    "title": "Luxury Mainsionette",
+    "category": "Maisonettes",
+    "image": "/images/1768378594071-villa-2.jpg",
+    "featured": true
+  },
+  {
+    "slug": "Contemporary Bungalow",
+    "title": "Contemporary Bungalow",
+    "category": "Bungalows",
+    "image": "/images/1768378743132-bungalow-3.jpg",
+    "featured": true
+  }
+]

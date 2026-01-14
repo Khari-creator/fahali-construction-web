@@ -8,13 +8,13 @@ export default function TopBar() {
         {/* LOCATION */}
         <div className="flex items-center gap-2">
           <MapPin size={14} className="text-red-600" />
-          <span className="tracking-wide">Westlands, Nairobi</span>
+          <span className="tracking-wide">Biashara Street, Hison Plaza, Nairobi</span>
         </div>
 
         {/* PHONE */}
         <div className="flex items-center gap-2">
           <Phone size={14} className="text-red-600" />
-          <span className="tracking-wide">+254 703204119</span>
+          <span className="tracking-wide">0703204119</span>
         </div>
 
       </div>
