@@ -1,45 +1,49 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
-import { Project } from "@/types/projects";
-
-const filePath = path.join(process.cwd(), "src/data/projects.json");
-
-function readProjects(): Project[] {
-  if (!fs.existsSync(filePath)) return [];
-  const data = fs.readFileSync(filePath, "utf8");
-  if (!data) return [];
-  return JSON.parse(data);
-}
-
-function writeProjects(data: Project[]) {
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-}
+import { supabase } from "@/lib/supabase/server";
 
 export async function GET() {
-  return NextResponse.json(readProjects());
+  const { data } = await supabase.from("projects").select("*");
+  return NextResponse.json(data ?? []);
 }
 
 export async function POST(req: Request) {
-  const project: Project = await req.json();
-  const projects = readProjects();
-  projects.push(project);
-  writeProjects(projects);
+  const body = await req.json();
+
+  const { title, slug, category, image, featured } = body;
+
+  if (!title || !slug || !category || !image) {
+    return NextResponse.json(
+      { error: "Missing fields" },
+      { status: 400 }
+    );
+  }
+
+  await supabase.from("projects").insert({
+    title,
+    slug,
+    category,
+    image,
+    featured,
+  });
+
   return NextResponse.json({ success: true });
 }
 
 export async function PUT(req: Request) {
   const { slug, data } = await req.json();
-  const projects = readProjects().map(p =>
-    p.slug === slug ? data : p
-  );
-  writeProjects(projects);
+
+  await supabase
+    .from("projects")
+    .update(data)
+    .eq("slug", slug);
+
   return NextResponse.json({ success: true });
 }
 
 export async function DELETE(req: Request) {
   const { slug } = await req.json();
-  const projects = readProjects().filter(p => p.slug !== slug);
-  writeProjects(projects);
+
+  await supabase.from("projects").delete().eq("slug", slug);
+
   return NextResponse.json({ success: true });
 }
