@@ -32,9 +32,14 @@ export default function ProjectsSection({
   useEffect(() => {
     fetch("/api/projects")
       .then(res => res.json())
-      .then((data: Project[]) => {
+      .then((apiResponse: { projects: Project[] }) => {
+        // Safely access the nested projects array or default to an empty array
+        const projectsArray = apiResponse.projects || [];
+
         setProjects(
-          onlyFeatured ? data.filter(p => p.featured) : data
+          onlyFeatured 
+            ? projectsArray.filter(p => p.featured) 
+            : projectsArray
         );
       });
   }, [onlyFeatured]);
