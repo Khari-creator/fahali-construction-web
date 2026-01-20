@@ -24,7 +24,10 @@ export default function AdminProjects() {
   };
 
   useEffect(() => {
-    loadProjects();
+    const fetchProjects = async () => {
+      await loadProjects();
+    };
+    fetchProjects();
   }, []);
 
   /* ---------------- SAVE PROJECT ---------------- */

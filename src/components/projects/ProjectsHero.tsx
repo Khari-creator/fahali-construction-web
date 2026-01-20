@@ -1,41 +1,45 @@
-"use client";
+import { NextResponse } from "next/server";
+import fs from "fs";
+import path from "path";
+import { Project } from "@/types/projects";
 
-import { motion } from "framer-motion";
+const filePath = path.join(process.cwd(), "src/data/projects.json");
 
-export default function ProjectsHero() {
-  return (
-    <section className="bg-white py-32">
-      <div className="max-w-7xl mx-auto px-6">
+function readProjects(): Project[] {
+  if (!fs.existsSync(filePath)) return [];
+  const data = fs.readFileSync(filePath, "utf8");
+  if (!data) return [];
+  return JSON.parse(data);
+}
 
-        <motion.span
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="text-sm font-semibold text-brand-accent uppercase"
-        >
-          Design & Build Experts
-        </motion.span>
+function writeProjects(data: Project[]) {
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+}
 
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="mt-4 text-5xl md:text-6xl font-extrabold"
-        >
-          Projects
-        </motion.h1>
+export async function GET() {
+  return NextResponse.json(readProjects());
+}
 
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="mt-6 max-w-3xl text-lg text-gray-600"
-        >
-          Our portfolio reflects excellence across residential, commercial,
-          and infrastructure developments—executed with precision, quality,
-          and attention to detail.
-        </motion.p>
+export async function POST(req: Request) {
+  const project: Project = await req.json();
+  const projects = readProjects();
+  projects.push(project);
+  writeProjects(projects);
+  return NextResponse.json({ success: true });
+}
 
-      </div>
-    </section>
+export async function PUT(req: Request) {
+  const { slug, data } = await req.json();
+  const projects = readProjects().map(p =>
+    p.slug === slug ? data : p
   );
+  writeProjects(projects);
+  return NextResponse.json({ success: true });
+}
+
+export async function DELETE(req: Request) {
+  const { slug } = await req.json();
+  const projects = readProjects().filter(p => p.slug !== slug);
+  writeProjects(projects);
+  return NextResponse.json({ success: true });
 }

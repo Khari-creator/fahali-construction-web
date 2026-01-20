@@ -1,31 +1,19 @@
-import { put } from "@vercel/blob";
 import { NextResponse } from "next/server";
+import fs from "fs";
+import path from "path";
 
 export async function POST(req: Request) {
-  try {
-    const formData = await req.formData();
-    const file = formData.get("file") as File;
+  const data = await req.formData();
+  const file = data.get("file") as File;
 
-    if (!file) {
-      return NextResponse.json({ error: "File required" }, { status: 400 });
-    }
+  const bytes = await file.arrayBuffer();
+  const buffer = Buffer.from(bytes);
 
-    if (!process.env.BLOB_READ_WRITE_TOKEN) {
-      return NextResponse.json({ error: "Missing blob token" }, { status: 500 });
-    }
+  const uploadDir = path.join(process.cwd(), "public/uploads");
+  if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
 
-    // NEXT.JS 16 / VERCEL BLOB 2026 FIX:
-    // In newer SDK versions, options are more restricted. 
-    // If 'addRandomSuffix' is causing a TS error, use 'allowOverwrite: false' 
-    // which is the default behavior to ensure uniqueness.
-    const blob = await put(file.name, file, {
-      contentType: file.type,
-      token: process.env.BLOB_READ_WRITE_TOKEN,
-    });
+  const filePath = `/uploads/${Date.now()}-${file.name}`;
+  fs.writeFileSync(path.join(process.cwd(), "public", filePath), buffer);
 
-    return NextResponse.json({ url: blob.url });
-  } catch (error) {
-    console.error("Upload Error:", error);
-    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
-  }
+  return NextResponse.json({ path: filePath });
 }

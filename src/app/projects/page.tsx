@@ -7,11 +7,10 @@ export const metadata = {
 export default function ProjectsPage() {
   return (
     <main className="bg-white min-h-screen">
-      {/* Header spacer */}
-      <div className="h-24" />
 
+      <div className="h-24" />
+      
       <ProjectsSection />
     </main>
   );
 }
-
