@@ -14,9 +14,7 @@ export async function POST(req: Request) {
     }
 
     // Upload to Vercel Blob Storage
-    const blob = await put(`uploads/${Date.now()}-${file.name}`, file, {
-      access: "public",
-    });
+    const blob = await put(`uploads/${Date.now()}-${file.name}`, file);
 
     return NextResponse.json({ path: blob.url });
   } catch (error) {
