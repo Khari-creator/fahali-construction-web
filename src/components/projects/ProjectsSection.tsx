@@ -32,10 +32,10 @@ export default function ProjectsSection({
   useEffect(() => {
     fetch("/api/projects")
       .then(res => res.json())
-      .then((data) => {
+      .then((data: { success: boolean; projects: Project[] }) => {
         const projectsArray = data.projects || [];
         setProjects(
-          onlyFeatured ? projectsArray.filter(p => p.featured) : projectsArray
+          onlyFeatured ? projectsArray.filter((p: Project) => p.featured) : projectsArray
         );
       });
   }, [onlyFeatured]);
