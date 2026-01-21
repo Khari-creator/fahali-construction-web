@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { put } from "@vercel/blob";
 
 export async function POST(req: Request) {
   try {
@@ -13,10 +12,27 @@ export async function POST(req: Request) {
       );
     }
 
-    // Upload to Vercel Blob Storage
-    const blob = await put(`uploads/${Date.now()}-${file.name}`, file);
+    // Try Vercel Blob Storage if token is available
+    if (process.env.BLOB_READ_WRITE_TOKEN) {
+      try {
+        const { put } = await import("@vercel/blob");
+        const blob = await put(`uploads/${Date.now()}-${file.name}`, file);
+        return NextResponse.json({ path: blob.url });
+      } catch (blobError) {
+        console.error("Blob storage error:", blobError);
+        // Fall through to data URL
+      }
+    } else {
+      console.warn("BLOB_READ_WRITE_TOKEN not set, using data URL fallback");
+    }
 
-    return NextResponse.json({ path: blob.url });
+    // Fallback: Convert to base64 data URL for development
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const base64 = buffer.toString("base64");
+    const dataUrl = `data:${file.type};base64,${base64}`;
+    
+    return NextResponse.json({ path: dataUrl });
   } catch (error) {
     console.error("Upload error:", error);
     return NextResponse.json(
