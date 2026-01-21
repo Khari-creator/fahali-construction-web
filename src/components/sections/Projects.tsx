@@ -10,7 +10,7 @@ export default function Projects() {
   useEffect(() => {
     fetch("/api/projects")
       .then(res => res.json())
-      .then(setProjects);
+      .then(data => setProjects(data.projects || []));
   }, []);
 
   const featured = projects.filter(p => p.featured).slice(0, 6);

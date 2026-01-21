@@ -9,6 +9,7 @@ const emptyProject: Project = {
   category: "Bungalows",
   image: "",
   featured: false,
+  description: null,
 };
 
 export default function AdminProjects() {
@@ -20,7 +21,7 @@ export default function AdminProjects() {
   const loadProjects = async () => {
     const res = await fetch("/api/projects");
     const data = await res.json();
-    setProjects(data);
+    setProjects(data.projects || []);
   };
 
   useEffect(() => {
@@ -42,14 +43,24 @@ export default function AdminProjects() {
     setSaving(true);
 
     const exists = projects.some(p => p.slug === editing.slug);
+    
+    // Map the form data to API schema
+    const projectData = {
+      title: editing.title,
+      slug: editing.slug,
+      category: editing.category,
+      imageUrl: editing.image,
+      description: editing.description || null,
+      featured: editing.featured || false,
+    };
 
     await fetch("/api/projects", {
       method: exists ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(
         exists
-          ? { slug: editing.slug, data: editing }
-          : editing
+          ? { slug: editing.slug, data: projectData }
+          : projectData
       ),
     });
 

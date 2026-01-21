@@ -1,8 +1,10 @@
-export type Project = {
-  slug: string;
+export interface Project {
+  id: string;
   title: string;
-  category: "Bungalows" | "Maisonettes" | "Apartments" | "Commercial";
-  image: string;
-  featured: boolean; // 👈 IMPORTANT
-};
-
+  slug: string;
+  category: string;
+  imageUrl: string;
+  description?: string | null;
+  featured?: boolean;
+  createdAt: string; // comes as ISO string from API
+}

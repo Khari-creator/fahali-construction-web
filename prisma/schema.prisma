@@ -13,7 +13,17 @@ model Project {
   category    String
   imageUrl    String
   description String?
+  featured    Boolean  @default(false)
   createdAt   DateTime @default(now())
 
   @@map("projects")
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+
+  @@map("admins")
 }

@@ -1,45 +1,64 @@
-import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+"use client";
+
+import { useEffect, useState } from "react";
+import Image from "next/image";
 import { Project } from "@/types/projects";
 
-const filePath = path.join(process.cwd(), "src/data/projects.json");
+export default function ProjectsHero() {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-function readProjects(): Project[] {
-  if (!fs.existsSync(filePath)) return [];
-  const data = fs.readFileSync(filePath, "utf8");
-  if (!data) return [];
-  return JSON.parse(data);
-}
+  useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const res = await fetch("/api/projects");
+        const data = await res.json();
 
-function writeProjects(data: Project[]) {
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-}
+        if (!data.success) {
+          throw new Error("Failed to load projects");
+        }
 
-export async function GET() {
-  return NextResponse.json(readProjects());
-}
+        setProjects(data.projects as Project[]);
+      } catch (err) {
+        console.error(err);
+        setError("Unable to load projects");
+      } finally {
+        setLoading(false);
+      }
+    }
 
-export async function POST(req: Request) {
-  const project: Project = await req.json();
-  const projects = readProjects();
-  projects.push(project);
-  writeProjects(projects);
-  return NextResponse.json({ success: true });
-}
+    fetchProjects();
+  }, []);
 
-export async function PUT(req: Request) {
-  const { slug, data } = await req.json();
-  const projects = readProjects().map(p =>
-    p.slug === slug ? data : p
+  if (loading) {
+    return <div>Loading projects...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  return (
+    <section className="projects-hero">
+      <h1>Our Projects</h1>
+
+      <div className="projects-grid">
+        {projects.map(project => (
+          <div key={project.id} className="project-card">
+            <Image
+              src={project.imageUrl}
+              alt={project.title}
+              width={400}
+              height={300}
+              className="project-image"
+            />
+
+            <h3>{project.title}</h3>
+            <p>{project.category}</p>
+          </div>
+        ))}
+      </div>
+    </section>
   );
-  writeProjects(projects);
-  return NextResponse.json({ success: true });
-}
-
-export async function DELETE(req: Request) {
-  const { slug } = await req.json();
-  const projects = readProjects().filter(p => p.slug !== slug);
-  writeProjects(projects);
-  return NextResponse.json({ success: true });
 }
