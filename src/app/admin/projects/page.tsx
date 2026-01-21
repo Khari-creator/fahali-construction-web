@@ -134,7 +134,14 @@ export default function AdminProjects() {
 
             <div className="flex gap-3">
               <button
-                onClick={() => setEditing(p)}
+                onClick={() => setEditing({
+                  slug: p.slug,
+                  title: p.title,
+                  category: p.category,
+                  image: p.imageUrl,
+                  featured: p.featured,
+                  description: p.description,
+                })}
                 className="px-3 py-1 border"
               >
                 Edit
