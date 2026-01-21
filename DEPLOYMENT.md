@@ -62,10 +62,11 @@ This ensures Prisma generates the client before Next.js builds. The `postinstall
 
 ### Initial Setup
 The database schema is automatically created through Prisma migrations:
-- `prisma/migrations/20260121090849_init/migration.sql` contains the schema
-- Tables: `projects` and `admins`
+- `prisma/migrations/20260121090849_init/migration.sql` - Initial schema with projects and admins
+- `prisma/migrations/20260121113242_add_project_images/migration.sql` - Adds project gallery images
+- Tables: `projects`, `project_images`, and `admins`
 
-### Data Seeding (Optional)
+#### Data Seeding (Optional)
 To add initial project data after deployment:
 
 ```bash
@@ -76,13 +77,45 @@ Note: Seeding is NOT configured to run automatically during build to prevent Ver
 
 ---
 
+## Project Detail Pages
+
+Projects are now fully clickable with individual detail pages:
+
+- **URL**: `/projects/[slug]`
+- **Features**:
+  - Displays full project information
+  - Shows main project image
+  - Displays all gallery images in a grid
+  - Project category and featured status
+  - Call-to-action to contact
+  - Related links to other projects
+
+### Adding Images to Projects
+
+Through the Admin CMS:
+1. Create or edit a project
+2. Upload the main project image (thumbnail)
+3. (Coming soon) Add additional gallery images through CMS
+
+Via API:
+```bash
+POST /api/projects/images
+{
+  "projectId": "project-id-here",
+  "imageUrl": "https://..."
+}
+```
+
 ## API Endpoints
 
 All API endpoints are now fully functional:
 
 ### Public Endpoints
-- **GET /api/projects** - Fetch all projects
+- **GET /api/projects** - Fetch all projects (includes gallery images)
   - Response: `{ success: true, count: number, projects: Project[] }`
+
+- **GET /api/projects/[slug]** - Fetch single project with all images
+  - Response: `{ success: true, project: Project }`
 
 ### Admin Endpoints (Requires authentication)
 - **POST /api/projects** - Create a new project
@@ -95,9 +128,17 @@ All API endpoints are now fully functional:
 - **DELETE /api/projects** - Delete a project
   - Requires: `slug`
 
+- **POST /api/projects/images** - Add image to project
+  - Requires: `projectId`, `imageUrl`
+  - Used for adding gallery images
+
+- **DELETE /api/projects/images** - Remove image from project
+  - Requires: `imageId`
+
 ### Authentication
 - **POST /api/auth/login** - Admin login
   - Requires: `email`, `password`
+  - Returns: `{ success: true }` with HttpOnly cookie
   - Returns: `{ success: true }` with HttpOnly cookie
 
 ### File Upload
