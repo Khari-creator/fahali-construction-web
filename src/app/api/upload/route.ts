@@ -1,19 +1,29 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import { put } from "@vercel/blob";
 
 export async function POST(req: Request) {
-  const data = await req.formData();
-  const file = data.get("file") as File;
+  try {
+    const data = await req.formData();
+    const file = data.get("file") as File;
 
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
+    if (!file) {
+      return NextResponse.json(
+        { error: "No file provided" },
+        { status: 400 }
+      );
+    }
 
-  const uploadDir = path.join(process.cwd(), "public/uploads");
-  if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
+    // Upload to Vercel Blob Storage
+    const blob = await put(`uploads/${Date.now()}-${file.name}`, file, {
+      access: "public",
+    });
 
-  const filePath = `/uploads/${Date.now()}-${file.name}`;
-  fs.writeFileSync(path.join(process.cwd(), "public", filePath), buffer);
-
-  return NextResponse.json({ path: filePath });
+    return NextResponse.json({ path: blob.url });
+  } catch (error) {
+    console.error("Upload error:", error);
+    return NextResponse.json(
+      { error: "Failed to upload file" },
+      { status: 500 }
+    );
+  }
 }
