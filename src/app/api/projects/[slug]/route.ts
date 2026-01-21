@@ -1,14 +1,18 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(
-  request: Request,
-  { params }: { params: { slug: string } }
+  request: NextRequest,
+  context: { params: Promise<{ slug: string }> }
 ) {
   try {
+    const { slug } = await context.params;
+
     const project = await prisma.project.findUnique({
-      where: { slug: params.slug },
-      include: { images: true },
+      where: { slug },
+      include: {
+        images: true,
+      },
     });
 
     if (!project) {
@@ -18,7 +22,10 @@ export async function GET(
       );
     }
 
-    return NextResponse.json({ success: true, project });
+    return NextResponse.json({
+      success: true,
+      project,
+    });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
