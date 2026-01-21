@@ -6,5 +6,13 @@ export interface Project {
   imageUrl: string;
   description?: string | null;
   featured?: boolean;
-  createdAt: string; // comes as ISO string from API
+  images?: ProjectImage[];
+  createdAt: string;
+}
+
+export interface ProjectImage {
+  id: string;
+  projectId: string;
+  imageUrl: string;
+  createdAt: string;
 }

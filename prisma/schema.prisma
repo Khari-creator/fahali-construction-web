@@ -7,16 +7,27 @@ datasource db {
 }
 
 model Project {
-  id          String   @id @default(uuid())
+  id          String         @id @default(uuid())
   title       String
-  slug        String   @unique
+  slug        String         @unique
   category    String
   imageUrl    String
   description String?
-  featured    Boolean  @default(false)
-  createdAt   DateTime @default(now())
+  featured    Boolean        @default(false)
+  images      ProjectImage[]
+  createdAt   DateTime       @default(now())
 
   @@map("projects")
+}
+
+model ProjectImage {
+  id        String   @id @default(uuid())
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  imageUrl  String
+  createdAt DateTime @default(now())
+
+  @@map("project_images")
 }
 
 model Admin {
