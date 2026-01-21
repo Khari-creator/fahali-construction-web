@@ -3,19 +3,12 @@
 import "dotenv/config";
 import { defineConfig } from "prisma/config";
 
-// Ensure DATABASE_URL is available for schema introspection during build
-if (!process.env.DATABASE_URL && process.env.CI) {
-  console.warn("⚠️  DATABASE_URL not set. Prisma schema generation may fail in CI/CD environments.");
-}
-
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"] || "postgresql://localhost/placeholder",
+    url: process.env["DATABASE_URL"],
   },
-  // Note: seed is intentionally not configured to avoid build failures in Vercel
-  // Run seeding manually: npx prisma db seed
 });
