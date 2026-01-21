@@ -3,7 +3,17 @@
 import { useEffect, useState } from "react";
 import { Project } from "@/types/projects";
 
-const emptyProject: Project = {
+// Local form type - uses 'image' for internal handling
+type AdminProject = {
+  slug: string;
+  title: string;
+  category: string;
+  image: string;
+  featured?: boolean;
+  description?: string | null;
+};
+
+const emptyProject: AdminProject = {
   slug: "",
   title: "",
   category: "Bungalows",
@@ -14,7 +24,7 @@ const emptyProject: Project = {
 
 export default function AdminProjects() {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [editing, setEditing] = useState<Project | null>(null);
+  const [editing, setEditing] = useState<AdminProject | null>(null);
   const [saving, setSaving] = useState(false);
 
   /* ---------------- LOAD PROJECTS ---------------- */
