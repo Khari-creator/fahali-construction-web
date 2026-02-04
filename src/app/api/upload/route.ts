@@ -49,7 +49,7 @@ export async function POST(req: Request) {
     // Get public URL
     const { data: publicData } = supabase.storage.from(bucket).getPublicUrl(data.path);
 
-    return NextResponse.json({ success: true, url: publicData.publicUrl });
+    return NextResponse.json({ success: true, url: publicData.publicUrl, path: data.path });
   } catch (error) {
     console.error("Upload error:", error);
     return NextResponse.json({ success: false, error: "Upload failed" }, { status: 500 });

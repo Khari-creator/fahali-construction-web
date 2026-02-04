@@ -133,16 +133,18 @@ export default function AdminProjects() {
     const form = new FormData();
     form.append("file", file);
 
-    const res = await fetch("/api/upload", {
-      method: "POST",
-      body: form,
-    });
-
+    const res = await fetch("/api/upload", { method: "POST", body: form });
     const data = await res.json();
+
+    if (!res.ok || !data) {
+      alert(data?.error || `Upload failed (${res.status})`);
+      return;
+    }
+
     const url = (data && (data.url || data.path)) as string | undefined;
 
     if (!url) {
-      alert("Upload failed");
+      alert(data.error || "Upload failed: no url returned");
       return;
     }
 
@@ -160,16 +162,18 @@ export default function AdminProjects() {
     const form = new FormData();
     form.append("file", file);
 
-    const res = await fetch("/api/upload", {
-      method: "POST",
-      body: form,
-    });
-
+    const res = await fetch("/api/upload", { method: "POST", body: form });
     const data = await res.json();
+
+    if (!res.ok || !data) {
+      alert(data?.error || `Upload failed (${res.status})`);
+      return;
+    }
+
     const url = (data && (data.url || data.path)) as string | undefined;
 
     if (!url) {
-      alert("Upload failed");
+      alert(data.error || "Upload failed: no url returned");
       return;
     }
 
