@@ -127,7 +127,7 @@ export default function AdminProjects() {
   };
 
   /* ---------------- IMAGE UPLOAD ---------------- */
-  const uploadImage = async (file: File) => {
+  const uploadHero = async (file: File) => {
     if (!file) return;
 
     const form = new FormData();
@@ -139,8 +139,6 @@ export default function AdminProjects() {
     });
 
     const data = await res.json();
-
-    // Accept either `url` (server) or `path` (legacy)
     const url = (data && (data.url || data.path)) as string | undefined;
 
     if (!url) {
@@ -148,39 +146,57 @@ export default function AdminProjects() {
       return;
     }
 
-    // If editing an existing project (has id), add this image as a gallery image
-    if (editing && editing.id) {
-      // If the file was intended as hero image, set editing.image as well
-      setEditing(prev => prev ? { ...prev, image: url } : prev);
+    // Set as hero image only
+    setEditing(prev => prev ? { ...prev, image: url } : prev);
+  };
 
-      try {
-        const imgRes = await fetch("/api/projects/images", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ projectId: editing.id, imageUrl: url }),
-        });
+  const uploadGallery = async (file: File) => {
+    if (!file) return;
+    if (!editing || !editing.id) {
+      alert("Save the project first to add gallery images");
+      return;
+    }
 
-        const imgData = await imgRes.json();
+    const form = new FormData();
+    form.append("file", file);
 
-        if (!imgRes.ok) {
-          alert(imgData.error || "Failed to add project image");
-        } else {
-          // Refresh projects and update current editing images
-          await loadProjects();
-          setEditing(prev => {
-            if (!prev) return prev;
-            const updated = { ...prev };
-            updated.images = updated.images ? [...updated.images, imgData.image] : [imgData.image];
-            return updated;
-          });
-        }
-      } catch (err) {
-        console.error(err);
-        alert("Failed to save project image");
+    const res = await fetch("/api/upload", {
+      method: "POST",
+      body: form,
+    });
+
+    const data = await res.json();
+    const url = (data && (data.url || data.path)) as string | undefined;
+
+    if (!url) {
+      alert("Upload failed");
+      return;
+    }
+
+    try {
+      const imgRes = await fetch("/api/projects/images", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ projectId: editing.id, imageUrl: url }),
+      });
+
+      const imgData = await imgRes.json();
+      if (!imgRes.ok) {
+        alert(imgData.error || "Failed to add project image");
+        return;
       }
-    } else {
-      // Not yet created project: just set hero image preview and ask user to save first for gallery
-      setEditing(prev => prev ? { ...prev, image: url } : prev);
+
+      // Refresh projects and editing object's images
+      await loadProjects();
+      setEditing(prev => {
+        if (!prev) return prev;
+        const updated = { ...prev };
+        updated.images = updated.images ? [...updated.images, imgData.image] : [imgData.image];
+        return updated;
+      });
+    } catch (err) {
+      console.error(err);
+      alert("Failed to save project image");
     }
   };
 
@@ -308,21 +324,37 @@ export default function AdminProjects() {
               <option>Commercial</option>
             </select>
 
-            {/* IMAGE UPLOAD */}
-            <input
-              type="file"
-              accept="image/*"
-              onChange={e =>
-                e.target.files && uploadImage(e.target.files[0])
-              }
-            />
-
-            {editing.image && (
-              <img
-                src={editing.image}
-                className="h-32 w-full object-cover"
+            {/* HERO IMAGE UPLOAD */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Hero Image</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={e => e.target.files && uploadHero(e.target.files[0])}
               />
-            )}
+
+              {editing.image && (
+                <img
+                  src={editing.image}
+                  className="h-32 w-full object-cover"
+                />
+              )}
+            </div>
+
+            {/* GALLERY UPLOAD */}
+            <div className="mt-3">
+              <label className="text-sm font-medium">Add Gallery Image</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={e => e.target.files && uploadGallery(e.target.files[0])}
+                disabled={!editing.id}
+                className={!editing.id ? "opacity-50 cursor-not-allowed" : ""}
+              />
+              {!editing.id && (
+                <p className="text-xs text-gray-500">Save the project first to add gallery images.</p>
+              )}
+            </div>
 
             {/* Description */}
             <textarea
