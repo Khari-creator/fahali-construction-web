@@ -12,11 +12,13 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const res = await fetch("/api/projects");
+        const res = await fetch(`/api/projects/${params.slug}`);
         const data = await res.json();
-        const projects = data.projects as Project[];
-        const found = projects.find(p => p.slug === params.slug);
-        setProject(found || null);
+        if (res.ok && data.project) {
+          setProject(data.project as Project);
+        } else {
+          setProject(null);
+        }
       } catch (error) {
         console.error("Failed to fetch project:", error);
       } finally {

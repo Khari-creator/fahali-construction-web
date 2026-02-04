@@ -1,16 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Project } from "@/types/projects";
+import { Project, ProjectImage } from "@/types/projects";
 
 // Local form type - uses 'image' for internal handling
 type AdminProject = {
+  id?: string;
   slug: string;
   title: string;
   category: string;
-  image: string;
+  image: string; // hero image url
   featured?: boolean;
   description?: string | null;
+  images?: ProjectImage[];
 };
 
 const emptyProject: AdminProject = {
@@ -53,7 +55,7 @@ export default function AdminProjects() {
     setSaving(true);
 
     const exists = projects.some(p => p.slug === editing.slug);
-    
+
     // Map the form data to API schema
     const projectData = {
       title: editing.title,
@@ -63,20 +65,52 @@ export default function AdminProjects() {
       description: editing.description || null,
       featured: editing.featured || false,
     };
+    try {
+      const res = await fetch("/api/projects", {
+        method: exists ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(
+          exists
+            ? { slug: editing.slug, data: projectData }
+            : projectData
+        ),
+      });
 
-    await fetch("/api/projects", {
-      method: exists ? "PUT" : "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(
-        exists
-          ? { slug: editing.slug, data: projectData }
-          : projectData
-      ),
-    });
+      const data = await res.json();
 
-    setSaving(false);
-    setEditing(null);
-    loadProjects();
+      if (!res.ok) {
+        alert(data.error || "Failed to save project");
+        setSaving(false);
+        return;
+      }
+
+      // If created or updated, reload projects and keep modal open with fresh data
+      await loadProjects();
+
+      // If API returned the project object, use it to update editing state (so we have `id` and `images`)
+      const returnedProject: Project | undefined = data.project as Project | undefined;
+
+      if (returnedProject) {
+        setEditing({
+          id: returnedProject.id,
+          slug: returnedProject.slug,
+          title: returnedProject.title,
+          category: returnedProject.category,
+          image: returnedProject.imageUrl,
+          featured: returnedProject.featured,
+          description: returnedProject.description,
+          images: returnedProject.images || [],
+        });
+      } else {
+        // fallback: close modal
+        setEditing(null);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to save project");
+    } finally {
+      setSaving(false);
+    }
   };
 
   /* ---------------- DELETE ---------------- */
@@ -94,6 +128,8 @@ export default function AdminProjects() {
 
   /* ---------------- IMAGE UPLOAD ---------------- */
   const uploadImage = async (file: File) => {
+    if (!file) return;
+
     const form = new FormData();
     form.append("file", file);
 
@@ -103,7 +139,76 @@ export default function AdminProjects() {
     });
 
     const data = await res.json();
-    setEditing(prev => prev ? { ...prev, image: data.path } : prev);
+
+    // Accept either `url` (server) or `path` (legacy)
+    const url = (data && (data.url || data.path)) as string | undefined;
+
+    if (!url) {
+      alert("Upload failed");
+      return;
+    }
+
+    // If editing an existing project (has id), add this image as a gallery image
+    if (editing && editing.id) {
+      // If the file was intended as hero image, set editing.image as well
+      setEditing(prev => prev ? { ...prev, image: url } : prev);
+
+      try {
+        const imgRes = await fetch("/api/projects/images", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ projectId: editing.id, imageUrl: url }),
+        });
+
+        const imgData = await imgRes.json();
+
+        if (!imgRes.ok) {
+          alert(imgData.error || "Failed to add project image");
+        } else {
+          // Refresh projects and update current editing images
+          await loadProjects();
+          setEditing(prev => {
+            if (!prev) return prev;
+            const updated = { ...prev };
+            updated.images = updated.images ? [...updated.images, imgData.image] : [imgData.image];
+            return updated;
+          });
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Failed to save project image");
+      }
+    } else {
+      // Not yet created project: just set hero image preview and ask user to save first for gallery
+      setEditing(prev => prev ? { ...prev, image: url } : prev);
+    }
+  };
+
+  const deleteImage = async (imageId: string) => {
+    if (!confirm("Delete this image?")) return;
+
+    try {
+      const res = await fetch("/api/projects/images", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imageId }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.error || "Failed to delete image");
+        return;
+      }
+
+      await loadProjects();
+      setEditing(prev => {
+        if (!prev) return prev;
+        return { ...prev, images: prev.images?.filter(i => i.id !== imageId) } as AdminProject;
+      });
+    } catch (err) {
+      console.error(err);
+      alert("Failed to delete image");
+    }
   };
 
   return (
@@ -135,12 +240,14 @@ export default function AdminProjects() {
             <div className="flex gap-3">
               <button
                 onClick={() => setEditing({
+                  id: p.id,
                   slug: p.slug,
                   title: p.title,
                   category: p.category,
                   image: p.imageUrl,
                   featured: p.featured,
                   description: p.description,
+                  images: p.images || [],
                 })}
                 className="px-3 py-1 border"
               >
@@ -215,6 +322,40 @@ export default function AdminProjects() {
                 src={editing.image}
                 className="h-32 w-full object-cover"
               />
+            )}
+
+            {/* Description */}
+            <textarea
+              placeholder="Description"
+              value={editing.description || ""}
+              onChange={e => setEditing({ ...editing, description: e.target.value })}
+              className="w-full border p-2 h-24"
+            />
+
+            {/* Gallery (only for saved projects) */}
+            {editing.id ? (
+              <div className="mt-4">
+                <h3 className="font-semibold mb-2">Project Images</h3>
+                {editing.images && editing.images.length > 0 ? (
+                  <div className="grid grid-cols-3 gap-2">
+                    {editing.images.map(img => (
+                      <div key={img.id} className="relative">
+                        <img src={img.imageUrl} className="h-24 w-full object-cover rounded" />
+                        <button
+                          onClick={() => deleteImage(img.id)}
+                          className="absolute top-1 right-1 bg-red-600 text-white px-2 py-1 text-xs rounded"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-600">No gallery images yet. Upload an image to add one.</p>
+                )}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-600 mt-2">Save the project first to add gallery images.</p>
             )}
 
             <label className="flex gap-2 items-center">
