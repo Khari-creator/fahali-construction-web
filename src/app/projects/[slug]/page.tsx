@@ -4,15 +4,21 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { Project } from "@/types/projects";
+import { useParams } from "next/navigation";
 
-export default function ProjectPage({ params }: { params: { slug: string } }) {
+export default function ProjectPage() {
+  const params = useParams();
+  const slug = params?.slug as string | undefined;
+
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!slug) return;
+
     const fetchProject = async () => {
       try {
-        const res = await fetch(`/api/projects/${params.slug}`);
+        const res = await fetch(`/api/projects/${slug}`);
         const data = await res.json();
         if (res.ok && data.project) {
           setProject(data.project as Project);
@@ -27,7 +33,7 @@ export default function ProjectPage({ params }: { params: { slug: string } }) {
     };
 
     fetchProject();
-  }, [params.slug]);
+  }, [slug]);
 
   if (loading) {
     return (
