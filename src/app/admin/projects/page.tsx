@@ -54,12 +54,24 @@ export default function AdminProjects() {
 
     setSaving(true);
 
-    const exists = projects.some(p => p.slug === editing.slug);
+    // Normalize slug on the client before sending to server
+    const normalizeSlug = (s: string) =>
+      s
+        .toString()
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9\-]/g, "")
+        .replace(/-+/g, "-")
+        .replace(/^-|-$/g, "");
+
+    const normalized = normalizeSlug(editing.slug);
+    const exists = projects.some(p => p.slug === normalized);
 
     // Map the form data to API schema
     const projectData = {
       title: editing.title,
-      slug: editing.slug,
+      slug: normalized,
       category: editing.category,
       imageUrl: editing.image,
       description: editing.description || null,
