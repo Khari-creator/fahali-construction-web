@@ -94,11 +94,42 @@ export default function ProjectPage() {
               )}
             </div>
 
-            {project.description && (
-              <p className="text-lg text-gray-700 leading-relaxed mb-8">
-                {project.description}
-              </p>
-            )}
+            {project.description && (() => {
+              const desc = project.description as string;
+              // Split on dash separators (" - ") or newlines
+              const parts = desc.split(/\s*-\s*|\r?\n/).map(s => s.trim()).filter(Boolean);
+
+              if (parts.length > 1) {
+                // If the first part looks like a heading (ends with ':'), treat it as a heading
+                const first = parts[0];
+                if (first.endsWith(':')) {
+                  const heading = first.replace(/:$/, '');
+                  const items = parts.slice(1);
+                  return (
+                    <div className="mb-8">
+                      <h3 className="text-xl font-semibold mb-3">{heading}</h3>
+                      <ul className="list-disc pl-6 space-y-2 text-lg text-gray-700">
+                        {items.map((it, i) => (
+                          <li key={i}>{it}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                }
+
+                return (
+                  <ul className="list-disc pl-6 space-y-2 text-lg text-gray-700 mb-8">
+                    {parts.map((it, i) => (
+                      <li key={i}>{it}</li>
+                    ))}
+                  </ul>
+                );
+              }
+
+              return (
+                <p className="text-lg text-gray-700 leading-relaxed mb-8">{desc}</p>
+              );
+            })()}
 
             {/* Project Stats */}
             <div className="bg-gray-50 p-8 rounded-lg mb-8">
