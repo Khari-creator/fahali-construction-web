@@ -96,38 +96,56 @@ export default function ProjectPage() {
 
             {project.description && (() => {
               const desc = project.description as string;
-              // Split on dash separators (" - ") or newlines
-              const parts = desc.split(/\s*-\s*|\r?\n/).map(s => s.trim()).filter(Boolean);
+              // Split only on newline or hyphen used as a separator (space-hyphen-space or line-start hyphen)
+              const rawParts = desc.split(/\r?\n|(?:^|\s)-\s+/).map(s => s.trim()).filter(Boolean);
 
-              if (parts.length > 1) {
-                // If the first part looks like a heading (ends with ':'), treat it as a heading
-                const first = parts[0];
-                if (first.endsWith(':')) {
-                  const heading = first.replace(/:$/, '');
-                  const items = parts.slice(1);
+              if (rawParts.length === 0) return null;
+
+              // Group parts into blocks: a heading (ends with ':') followed by items
+              const blocks: Array<{ heading?: string | null; items: string[] }> = [];
+              let current = { heading: null as string | null, items: [] as string[] };
+
+              for (const p of rawParts) {
+                if (p.endsWith(':')) {
+                  // push previous block
+                  if (current.items.length || current.heading) blocks.push(current);
+                  current = { heading: p.replace(/:$/, '').trim(), items: [] };
+                } else {
+                  current.items.push(p);
+                }
+              }
+              if (current.items.length || current.heading) blocks.push(current);
+
+              // If there's only one block and no heading, render a simple list if multiple items
+              if (blocks.length === 1 && !blocks[0].heading) {
+                const items = blocks[0].items;
+                if (items.length > 1) {
                   return (
-                    <div className="mb-8">
-                      <h3 className="text-xl font-semibold mb-3">{heading}</h3>
-                      <ul className="list-disc pl-6 space-y-2 text-lg text-gray-700">
-                        {items.map((it, i) => (
-                          <li key={i}>{it}</li>
-                        ))}
-                      </ul>
-                    </div>
+                    <ul className="list-disc pl-6 space-y-2 text-lg text-gray-700 mb-8">
+                      {items.map((it, i) => (
+                        <li key={i}>{it}</li>
+                      ))}
+                    </ul>
                   );
                 }
-
-                return (
-                  <ul className="list-disc pl-6 space-y-2 text-lg text-gray-700 mb-8">
-                    {parts.map((it, i) => (
-                      <li key={i}>{it}</li>
-                    ))}
-                  </ul>
-                );
+                return <p className="text-lg text-gray-700 leading-relaxed mb-8">{items[0]}</p>;
               }
 
               return (
-                <p className="text-lg text-gray-700 leading-relaxed mb-8">{desc}</p>
+                <div className="mb-8">
+                  {blocks.map((b, bi) => (
+                    <div key={bi} className="mb-4">
+                      {b.heading && <h3 className="text-xl font-semibold mb-3">{b.heading}</h3>}
+                      {b.items.length > 0 && (
+                        <ul className="list-disc pl-6 space-y-2 text-lg text-gray-700">
+                          {b.items.map((it, i) => (
+                            <li key={i}>{it}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
+                </div>
               );
             })()}
 
