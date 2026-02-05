@@ -14,12 +14,13 @@ export async function GET() {
       "services",
     ];
 
-    const projects = await prisma.project.findMany({ select: { slug: true, updatedAt: true, createdAt: true } });
+    // Note: schema defines `createdAt` but not `updatedAt` for Project
+    const projects = await prisma.project.findMany({ select: { slug: true, createdAt: true } });
 
     const urls = [];
 
     for (const p of projects) {
-      const lastmod = p.updatedAt ? new Date(p.updatedAt).toISOString() : new Date(p.createdAt).toISOString();
+      const lastmod = new Date(p.createdAt).toISOString();
       urls.push({ loc: `${siteUrl}/projects/${encodeURIComponent(p.slug)}`, lastmod });
     }
 
