@@ -12,6 +12,12 @@ export async function POST(req: Request) {
       );
     }
 
+    // Verify project exists before creating image
+    const project = await prisma.project.findUnique({ where: { id: projectId } });
+    if (!project) {
+      return NextResponse.json({ success: false, error: "Project not found" }, { status: 404 });
+    }
+
     const image = await prisma.projectImage.create({
       data: {
         projectId,

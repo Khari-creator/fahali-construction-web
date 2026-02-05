@@ -13,6 +13,16 @@ export async function POST(req: Request) {
       );
     }
 
+    // Basic validation: types and size
+    const allowedTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
+    const maxSizeBytes = parseInt(process.env.MAX_UPLOAD_SIZE || "5242880", 10); // default 5MB
+
+    if (!allowedTypes.includes(file.type)) {
+      return NextResponse.json({ success: false, error: "Unsupported file type" }, { status: 400 });
+    }
+
+    // Some runtimes provide `size` on File; otherwise rely on ArrayBuffer length after reading
+
     const SUPABASE_URL = process.env.SUPABASE_URL;
     const SUPABASE_SERVICE_ROLE = process.env.SUPABASE_SERVICE_ROLE || process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
 
@@ -31,6 +41,9 @@ export async function POST(req: Request) {
 
     // Convert File to ArrayBuffer for upload
     const arrayBuffer = await file.arrayBuffer();
+    if (arrayBuffer.byteLength > maxSizeBytes) {
+      return NextResponse.json({ success: false, error: "File too large" }, { status: 400 });
+    }
     const uint8Array = new Uint8Array(arrayBuffer);
 
     const { data, error } = await supabase.storage

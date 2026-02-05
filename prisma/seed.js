@@ -1,8 +1,14 @@
 const { PrismaClient } = require('@prisma/client');
+const { Pool } = require('pg');
+const { PrismaPg } = require('@prisma/adapter-pg');
 const bcrypt = require('bcryptjs');
-require('dotenv').config();
+const dotenv = require('dotenv');
+dotenv.config({ path: '.env.local' });
+dotenv.config();
 
-const prisma = new PrismaClient();
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   const email = process.env.ADMIN_EMAIL;
@@ -30,4 +36,5 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
+    await pool.end();
   });

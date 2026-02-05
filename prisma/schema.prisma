@@ -14,8 +14,14 @@ model Project {
   imageUrl    String
   description String?
   featured    Boolean        @default(false)
-  images      ProjectImage[]
   createdAt   DateTime       @default(now())
+  benefits    Json?
+  ctaLink     String?
+  ctaText     String?
+  features    Json?
+  intro       String?
+  perfectFor  Json?
+  images      ProjectImage[]
 
   @@map("projects")
 }
@@ -23,9 +29,9 @@ model Project {
 model ProjectImage {
   id        String   @id @default(uuid())
   projectId String
-  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   imageUrl  String
   createdAt DateTime @default(now())
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@map("project_images")
 }
