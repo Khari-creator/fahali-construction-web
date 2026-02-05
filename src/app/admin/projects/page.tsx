@@ -286,8 +286,8 @@ export default function AdminProjects() {
 
       {/* MODAL */}
       {editing && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
-          <div className="bg-white text-black p-6 w-full max-w-md space-y-4">
+        <div className="fixed inset-0 bg-black/80 flex items-start md:items-center justify-center z-50 overflow-auto">
+          <div className="bg-white text-black p-6 w-full max-w-md space-y-4 max-h-[90vh] overflow-auto pb-6">
             <h2 className="font-bold text-xl">
               {projects.some(p => p.slug === editing.slug)
                 ? "Edit Project"
