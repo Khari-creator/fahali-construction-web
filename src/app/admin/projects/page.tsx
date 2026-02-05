@@ -244,7 +244,7 @@ export default function AdminProjects() {
   };
 
   return (
-    <main className="max-w-5xl mx-auto py-20 px-6 text-white">
+    <main className="max-w-5xl mx-auto py-20 px-6 text-black">
       <h1 className="text-3xl font-bold mb-8">Projects CMS</h1>
 
       {/* ADD BUTTON */}
