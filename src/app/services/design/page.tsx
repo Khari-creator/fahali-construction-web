@@ -11,7 +11,7 @@ export default function DesignServicePage() {
 
       {/* HERO */}
       <section className="relative overflow-hidden bg-black text-white">
-        <div className="max-w-7xl mx-auto px-6 py-32 grid md:grid-cols-2 gap-16 items-center">
+        <div className="max-w-7xl mx-auto px-6 py-24 md:py-32 grid md:grid-cols-2 gap-12 md:gap-16 items-center">
 
           {/* TEXT */}
           <motion.div
@@ -23,11 +23,11 @@ export default function DesignServicePage() {
               Our Services
             </p>
 
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-6">
               Design & Planning
             </h1>
 
-            <p className="text-gray-300 text-lg max-w-xl">
+            <p className="text-gray-300 text-base md:text-lg max-w-xl">
               We transform ideas into build-ready designs through intelligent
               architectural planning, engineering coordination, and regulatory
               compliance.
@@ -39,7 +39,7 @@ export default function DesignServicePage() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7 }}
-            className="relative ml-auto w-[360px] h-[360px] md:w-[420px] md:h-[420px]"
+            className="relative ml-auto w-44 sm:w-56 md:w-[360px] h-44 sm:h-56 md:h-[360px]"
           >
             {/* background depth image */}
             <div className="absolute inset-0 rounded-full overflow-hidden opacity-30 blur-sm">

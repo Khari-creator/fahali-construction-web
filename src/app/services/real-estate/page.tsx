@@ -15,7 +15,7 @@ export default function RealEstatePage() {
 
       {/* HERO */}
       <section className="relative bg-neutral-900 text-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 py-32 grid md:grid-cols-2 gap-16 items-center">
+        <div className="max-w-7xl mx-auto px-6 py-24 md:py-32 grid md:grid-cols-2 gap-12 md:gap-16 items-center">
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -25,10 +25,10 @@ export default function RealEstatePage() {
             <p className="text-brand-accent font-semibold mb-4">
               Our Services
             </p>
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-6">
               Real Estate Development
             </h1>
-            <p className="text-gray-300 text-lg max-w-xl">
+            <p className="text-gray-300 text-base md:text-lg max-w-xl">
               We identify, develop, and deliver high-value real estate assets
               that meet market demand and long-term investment goals.
             </p>
@@ -39,7 +39,7 @@ export default function RealEstatePage() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7 }}
-            className="relative h-[380px] w-[380px] md:h-[440px] md:w-[440px] rounded-full bg-gradient-to-br from-red-700 to-red-900 opacity-90 ml-auto"
+            className="relative ml-auto w-44 sm:w-56 md:w-[380px] h-44 sm:h-56 md:h-[380px] rounded-full bg-gradient-to-br from-red-700 to-red-900 opacity-90"
           />
         </div>
       </section>

@@ -18,7 +18,7 @@ export default function ServiceHero({
 }: ServiceHeroProps) {
   return (
     <section className="relative bg-black text-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 py-32 grid md:grid-cols-2 items-center gap-16">
+      <div className="max-w-7xl mx-auto px-6 py-24 md:py-32 grid md:grid-cols-2 items-center gap-12 md:gap-16">
 
         {/* LEFT CONTENT */}
         <motion.div
@@ -30,11 +30,11 @@ export default function ServiceHero({
             {eyebrow}
           </p>
 
-          <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
             {title}
           </h1>
 
-          <p className="text-gray-300 max-w-xl leading-relaxed">
+          <p className="text-gray-300 text-base md:text-lg max-w-xl leading-relaxed">
             {description}
           </p>
         </motion.div>
@@ -48,7 +48,7 @@ export default function ServiceHero({
         >
 
           {/* BACKGROUND IMAGE CIRCLE */}
-          <div className="absolute w-[420px] h-[420px] rounded-full overflow-hidden opacity-30 blur-sm">
+          <div className="absolute -right-8 md:-right-20 top-1/2 -translate-y-1/2 w-36 sm:w-48 md:w-[420px] h-36 sm:h-48 md:h-[420px] rounded-full overflow-hidden opacity-30 blur-sm">
             <Image
               src={image}
               alt=""
@@ -58,7 +58,7 @@ export default function ServiceHero({
           </div>
 
           {/* FOREGROUND IMAGE CIRCLE */}
-          <div className="relative w-[360px] h-[360px] rounded-full overflow-hidden border border-red-600/30 shadow-2xl">
+          <div className="relative w-44 sm:w-56 md:w-[360px] h-44 sm:h-56 md:h-[360px] rounded-full overflow-hidden border border-red-600/30 shadow-2xl">
             <Image
               src={image}
               alt={title}
