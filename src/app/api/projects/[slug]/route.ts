@@ -8,11 +8,31 @@ export async function GET(
   try {
     const { slug } = await context.params;
 
-    const project = await prisma.project.findUnique({
-      where: { slug },
-      include: {
-        images: true,
-      },
+    // Try several slug variants to be tolerant of un-normalized slugs
+    const normalizeSlug = (s: string) =>
+      s
+        .toString()
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9\-]/g, "")
+        .replace(/-+/g, "-")
+        .replace(/^-|-$/g, "");
+
+    const decoded = decodeURIComponent(slug || "");
+    const candidates = Array.from(new Set([
+      slug,
+      decoded,
+      // replace spaces with hyphens and vice-versa
+      (slug || "").replace(/%20/g, " "),
+      (slug || "").replace(/-/g, " "),
+      normalizeSlug(slug || ""),
+      normalizeSlug(decoded || ""),
+    ].filter(Boolean)));
+
+    const project = await prisma.project.findFirst({
+      where: { slug: { in: candidates } },
+      include: { images: true },
     });
 
     if (!project) {
