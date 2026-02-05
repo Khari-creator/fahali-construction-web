@@ -44,19 +44,22 @@ export async function POST(req: Request) {
     if (arrayBuffer.byteLength > maxSizeBytes) {
       return NextResponse.json({ success: false, error: "File too large" }, { status: 400 });
     }
-    const uint8Array = new Uint8Array(arrayBuffer);
+    // Use Node Buffer for server-side upload to Supabase
+    const buffer = Buffer.from(arrayBuffer);
 
-    const { data, error } = await supabase.storage
-      .from(bucket)
-      .upload(filename, uint8Array, {
-        contentType: file.type,
-        cacheControl: "3600",
-        upsert: false,
-      });
+    const { data, error } = await supabase.storage.from(bucket).upload(filename, buffer, {
+      contentType: file.type,
+      cacheControl: "3600",
+      upsert: false,
+    });
 
     if (error) {
+      // Log full error for server-side debugging
       console.error("Supabase upload error:", error);
-      return NextResponse.json({ success: false, error: "Upload failed" }, { status: 500 });
+      // Return detailed error temporarily to help diagnose production failures (remove after debugging)
+      const message = (error.message || JSON.stringify(error));
+      const status = (error.status || 500);
+      return NextResponse.json({ success: false, error: message }, { status });
     }
 
     // Get public URL
@@ -65,6 +68,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true, url: publicData.publicUrl, path: data.path });
   } catch (error) {
     console.error("Upload error:", error);
-    return NextResponse.json({ success: false, error: "Upload failed" }, { status: 500 });
+    // Surface unexpected errors during debugging
+    const message = (error instanceof Error ? error.message : String(error));
+    return NextResponse.json({ success: false, error: message }, { status: 500 });
   }
 }
