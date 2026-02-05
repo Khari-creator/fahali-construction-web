@@ -24,11 +24,25 @@ export async function POST(req: Request) {
     // Some runtimes provide `size` on File; otherwise rely on ArrayBuffer length after reading
 
     const SUPABASE_URL = process.env.SUPABASE_URL;
-    const SUPABASE_SERVICE_ROLE = process.env.SUPABASE_SERVICE_ROLE || process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
+    // Accept multiple possible env names for the service role key (some setups use *_KEY suffix)
+    const SUPABASE_SERVICE_ROLE =
+      process.env.SUPABASE_SERVICE_ROLE ||
+      process.env.SUPABASE_SERVICE_ROLE_KEY ||
+      process.env.SUPABASE_SERVICE_KEY ||
+      process.env.SUPABASE_ANON_KEY;
 
     if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE) {
-      console.error("Missing Supabase environment variables");
-      return NextResponse.json({ success: false, error: "Server configuration error" }, { status: 500 });
+      // Log which env variable keys are present (do not log values)
+      const present = {
+        SUPABASE_URL: !!process.env.SUPABASE_URL,
+        SUPABASE_SERVICE_ROLE: !!process.env.SUPABASE_SERVICE_ROLE,
+        SUPABASE_SERVICE_ROLE_KEY: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+        SUPABASE_SERVICE_KEY: !!process.env.SUPABASE_SERVICE_KEY,
+        SUPABASE_ANON_KEY: !!process.env.SUPABASE_ANON_KEY,
+        SUPABASE_STORAGE_BUCKET: !!process.env.SUPABASE_STORAGE_BUCKET,
+      };
+      console.error("Missing Supabase environment variables - presence:", present);
+      return NextResponse.json({ success: false, error: "Server configuration error: missing Supabase keys" }, { status: 500 });
     }
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE, {
