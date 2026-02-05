@@ -33,10 +33,23 @@ export async function POST(req: Request) {
       );
     }
 
+    // Normalize slug to a URL-friendly format
+    const normalizeSlug = (s: string) =>
+      s
+        .toString()
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9\-]/g, "")
+        .replace(/-+/g, "-")
+        .replace(/^-|-$/g, "");
+
+    const slug = normalizeSlug(body.slug);
+
     const project = await prisma.project.create({
       data: {
         title: body.title,
-        slug: body.slug,
+        slug,
         category: body.category,
         imageUrl: body.imageUrl,
         description: body.description ?? null,
