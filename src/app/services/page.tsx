@@ -99,40 +99,35 @@ export default function ServicesPage() {
                   >
                     Learn more →
                   </Link>
-
-                  <a
-                    href="https://wa.me/254703204119?text=Hello%2C%20I%20would%20like%20to%20discuss%20your%20services."
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block bg-red-600 px-4 py-2 rounded-full text-white font-semibold hover:bg-red-700 transition"
-                  >
-                    Contact Us
-                  </a>
                 </div>
               </motion.div>
             );
           })}
+        </div>
+      </div>
+    </section>
 
-        {/* Process Line */}
+    {/* PROCESS SECTION */}
+    <section className="py-20 bg-neutral-100">
+      <div className="max-w-7xl mx-auto px-6 text-center">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mt-28 border-t border-neutral-300 pt-14"
+          className="mt-8 border-t border-neutral-300 pt-14"
         >
           <p className="text-center text-lg font-semibold tracking-wide text-neutral-700">
             Design → Engineering → Build → Deliver
           </p>
         </motion.div>
 
-        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="mt-20 text-center"
+          className="mt-12 text-center"
         >
           <a
             href="https://wa.me/254703204119?text=Hello%2C%20I%20would%20like%20to%20discuss%20your%20services."
@@ -144,7 +139,6 @@ export default function ServicesPage() {
           </a>
         </motion.div>
       </div>
-    </div>
     </section>
   );
 }
