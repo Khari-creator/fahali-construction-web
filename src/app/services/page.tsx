@@ -144,6 +144,7 @@ export default function ServicesPage() {
           </a>
         </motion.div>
       </div>
+    </div>
     </section>
   );
 }
