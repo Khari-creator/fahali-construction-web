@@ -80,10 +80,15 @@ export default function Footer() {
             </li>
           </ul>
 
-          <button className="mt-8 inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-red-600 hover:bg-red-700 transition font-semibold">
+          <a
+            href="https://wa.me/254703204119?text=Hello%2C%20I%20would%20like%20to%20start%20a%20project%20with%20Fahali%20Construction.%20Could%20you%20please%20share%20next%20steps%3F"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-8 inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-red-600 hover:bg-red-700 transition font-semibold"
+          >
             Start a Project
             <ArrowUpRight size={18} />
-          </button>
+          </a>
         </motion.div>
       </div>
 
