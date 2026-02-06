@@ -55,17 +55,28 @@ export default function Footer() {
           <ul className="mt-6 space-y-4 text-white/70">
             <li className="flex gap-3">
               <MapPin size={18} className="text-red-500" />
-              <span>Nairobi, Kenya</span>
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=Nairobi%2C+Kenya"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline-offset-2 hover:underline"
+              >
+                Nairobi, Kenya
+              </a>
             </li>
 
             <li className="flex gap-3">
               <Phone size={18} className="text-red-500" />
-              <span>+254 703204119</span>
+              <a href="tel:+254703204119" className="hover:underline">
+                +254 703204119
+              </a>
             </li>
 
             <li className="flex gap-3">
               <Mail size={18} className="text-red-500" />
-              <span>info@fahalibuilders.com</span>
+              <a href="mailto:info@fahalibuilders.com" className="hover:underline">
+                info@fahalibuilders.com
+              </a>
             </li>
           </ul>
 
