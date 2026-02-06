@@ -35,7 +35,14 @@ export default function Footer() {
           </p>
 
           <div className="mt-8 flex gap-4">
-            <SocialIcon icon={<Facebook size={18} />} />
+            <a
+              href="https://www.facebook.com/share/17s3mW59Z8/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Fahali Construction Facebook"
+            >
+              <SocialIcon icon={<Facebook size={18} />} />
+            </a>
             <SocialIcon icon={<Instagram size={18} />} />
             <SocialIcon icon={<Linkedin size={18} />} />
           </div>
