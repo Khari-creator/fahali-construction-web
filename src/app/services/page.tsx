@@ -92,19 +92,23 @@ export default function ServicesPage() {
                   {service.description}
                 </p>
 
-                <Link
-                  href={service.href}
-                  className="inline-flex items-center text-red-600 font-semibold hover:underline"
-                >
-                  Learn more →
-                <a
-                  href="https://wa.me/254703204119?text=Hello%2C%20I%20would%20like%20to%20discuss%20your%20services."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block bg-red-600 px-10 py-4 rounded-full font-semibold hover:bg-red-700 transition"
-                >
-                  Contact Us
-                </a>
+                <div className="flex items-center gap-4">
+                  <Link
+                    href={service.href}
+                    className="inline-flex items-center text-red-600 font-semibold hover:underline"
+                  >
+                    Learn more →
+                  </Link>
+
+                  <a
+                    href="https://wa.me/254703204119?text=Hello%2C%20I%20would%20like%20to%20discuss%20your%20services."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block bg-red-600 px-4 py-2 rounded-full text-white font-semibold hover:bg-red-700 transition"
+                  >
+                    Contact Us
+                  </a>
+                </div>
         {/* Process Line */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -126,12 +130,14 @@ export default function ServicesPage() {
           transition={{ duration: 0.6 }}
           className="mt-20 text-center"
         >
-          <Link
-            href="/contact"
+          <a
+            href="https://wa.me/254703204119?text=Hello%2C%20I%20would%20like%20to%20discuss%20your%20services."
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-block bg-red-600 text-white px-10 py-4 rounded-full font-semibold hover:bg-red-700 transition"
           >
             Talk to Our Team
-          </Link>
+          </a>
         </motion.div>
       </div>
     </section>
