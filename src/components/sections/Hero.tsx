@@ -60,7 +60,9 @@ export default function Hero() {
             <motion.a
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              href="/contact"
+              href="https://wa.me/254703204119?text=Hello%2C%20I%20would%20like%20to%20request%20a%20quote."
+              target="_blank"
+              rel="noopener noreferrer"
               className="rounded-md bg-brand-accent px-8 py-4 font-semibold text-black"
             >
               Request a Quote

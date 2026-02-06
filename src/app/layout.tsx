@@ -2,6 +2,7 @@ import "./globals.css";
 import TopBar from "@/components/layout/TopBar";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import WhatsAppFloat from "@/components/layout/WhatsAppFloat";
 
 export const metadata = {
   title: process.env.NEXT_PUBLIC_SITE_NAME || "Fahali Building & Civil Engineering Ltd",
@@ -54,6 +55,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
+        <WhatsAppFloat />
       </body>
     </html>
   );

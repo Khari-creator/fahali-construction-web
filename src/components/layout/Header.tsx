@@ -56,7 +56,7 @@ export default function Header() {
           </DesktopDropdown>
 
           <NavLink href="/about">About</NavLink>
-          <NavLink href="/contact">Contact</NavLink>
+          <a href="https://wa.me/254703204119?text=Hello%2C%20I%20would%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer" className="hover:text-brand-accent transition">Contact</a>
            <NavLink href="/admin/projects">Admin</NavLink>
         </nav>
 
@@ -136,9 +136,9 @@ export default function Header() {
             About
           </MobileLink>
 
-          <MobileLink href="/contact" onClick={() => setMenuOpen(false)}>
+          <a href="https://wa.me/254703204119?text=Hello%2C%20I%20would%20like%20to%20discuss%20a%20project." onClick={() => setMenuOpen(false)} target="_blank" rel="noopener noreferrer" className="block">
             Contact
-          </MobileLink>
+          </a>
           <MobileLink href="/admin" onClick={() => setMenuOpen(false)}>
             Admin
           </MobileLink>

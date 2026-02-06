@@ -142,12 +142,14 @@ export default function RealEstatePage() {
             projects that stand the test of time.
           </p>
 
-          <Link
-            href="/contact"
+          <a
+            href="https://wa.me/254703204119?text=Hello%2C%20I%20would%20like%20to%20discuss%20a%20development%20project."
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-block bg-red-600 px-10 py-4 rounded-full font-semibold hover:bg-red-700 transition"
           >
             Discuss a Development
-          </Link>
+          </a>
         </motion.div>
       </section>
 

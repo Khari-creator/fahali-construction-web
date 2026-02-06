@@ -181,12 +181,9 @@ export default function ProjectPage() {
               <p>
                 View all the project images below to see the quality of our work and attention to detail.
               </p>
-              <Link
-                href="/contact"
-                className="inline-block mt-4 px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
-              >
-                Inquire About Similar Work
-              </Link>
+                <a href="https://wa.me/254703204119?text=Hello%2C%20I%20am%20interested%20in%20this%20project." target="_blank" rel="noopener noreferrer" className="inline-block mt-4 px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition">
+                  Inquire About Similar Work
+                </a>
             </div>
           </div>
         </div>
@@ -215,12 +212,9 @@ export default function ProjectPage() {
           <p className="text-lg mb-8">
             Let's discuss how we can bring your vision to life with the same quality and expertise.
           </p>
-          <Link
-            href="/contact"
-            className="inline-block px-10 py-3 bg-white text-red-600 font-semibold rounded hover:bg-gray-100 transition"
-          >
-            Get in Touch
-          </Link>
+            <a href="https://wa.me/254703204119?text=Hello%2C%20I%20am%20interested%20in%20this%20project." target="_blank" rel="noopener noreferrer" className="inline-block px-10 py-3 bg-white text-red-600 font-semibold rounded hover:bg-gray-100 transition">
+              Get in Touch
+            </a>
         </div>
       </div>
     </main>
