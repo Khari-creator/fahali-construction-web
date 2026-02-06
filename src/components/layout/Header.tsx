@@ -13,22 +13,23 @@ export default function Header() {
 
   return (
     <header className="w-full border-b border-gray-800 bg-black text-white">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+      <div className="mx-auto flex h-20 max-w-7xl items-center px-6">
 
-        {/* Logo */}
-        <Link href="/" className="flex items-center">
-          <Image
-            src="/logo.jpg"
-            alt={siteConfig.name}
-            width={160}
-            height={40}
-            className="h-12 w-auto object-contain"
-            priority
-          />
+        {/* Logo (left half) */}
+        <Link href="/" className="flex items-center w-1/2">
+          <div className="relative h-12 w-full">
+            <Image
+              src="/logo.jpg"
+              alt={siteConfig.name}
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden items-center space-x-8 md:flex">
+        {/* Desktop Navigation (right half) */}
+        <nav className="hidden items-center space-x-8 md:flex w-1/2 justify-end">
           <NavLink href="/">Home</NavLink>
 
           <DesktopDropdown label="Services">
