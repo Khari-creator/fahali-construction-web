@@ -109,6 +109,10 @@ export default function ServicesPage() {
                     Contact Us
                   </a>
                 </div>
+              </motion.div>
+            );
+          })}
+
         {/* Process Line */}
         <motion.div
           initial={{ opacity: 0 }}

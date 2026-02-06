@@ -178,6 +178,12 @@ export default function BuildServicePage() {
           >
             Contact Us
           </a>
+          </motion.div>
+      </section>
+
+    </main>
+  );
+}
 
 /* ---------- DATA ---------- */
 
