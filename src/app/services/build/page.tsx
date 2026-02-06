@@ -170,11 +170,6 @@ export default function BuildServicePage() {
             time, and to specification.
           </p>
 
-          <Link
-            href="/contact"
-            className="inline-block bg-red-600 px-10 py-4 rounded-full font-semibold hover:bg-red-700 transition"
-          >
-            Start Your Build
           <a
             href="https://wa.me/254703204119?text=Hello%2C%20I%20would%20like%20to%20discuss%20construction%20services."
             target="_blank"
@@ -183,7 +178,6 @@ export default function BuildServicePage() {
           >
             Contact Us
           </a>
-}
 
 /* ---------- DATA ---------- */
 
