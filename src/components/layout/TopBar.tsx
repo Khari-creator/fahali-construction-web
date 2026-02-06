@@ -4,8 +4,10 @@ export default function TopBar() {
   return (
     <div className="bg-black text-white text-sm py-2">
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+        {/* left placeholder (kept empty so topbar layout remains balanced) */}
+        <div />
 
-        {/* FACEBOOK */}
+        {/* FACEBOOK on the right */}
         <div className="flex items-center gap-2">
           <a
             href="https://www.facebook.com/share/17s3mW59Z8/"
