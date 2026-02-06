@@ -15,9 +15,9 @@ export default function Header() {
     <header className="w-full border-b border-gray-800 bg-black text-white">
       <div className="mx-auto flex h-20 max-w-7xl items-center px-6">
 
-        {/* Logo (left half) */}
-        <Link href="/" className="flex items-center w-1/2">
-          <div className="relative h-12 w-full">
+        {/* Logo (left half on md+, responsive on smaller screens) */}
+        <Link href="/" className="flex items-center flex-1 md:w-1/2">
+          <div className="relative h-10 sm:h-12 md:h-16 w-full pl-0">
             <Image
               src="/logo.jpg"
               alt={siteConfig.name}
