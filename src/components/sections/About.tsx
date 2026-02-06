@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import {
   Building2,
   Compass,
@@ -97,13 +98,15 @@ export default function About() {
             — ensuring quality, efficiency, and long-term value in every build.
           </p>
 
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="mt-10 inline-flex items-center gap-2 px-8 py-4 rounded-full bg-red-600 text-white font-semibold shadow-lg hover:bg-red-700 transition"
-          >
-            Learn More About Us
-          </motion.button>
+          <Link href="/about">
+            <motion.a
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="mt-10 inline-flex items-center gap-2 px-8 py-4 rounded-full bg-red-600 text-white font-semibold shadow-lg hover:bg-red-700 transition"
+            >
+              Learn More About Us
+            </motion.a>
+          </Link>
         </motion.div>
       </div>
     </section>
