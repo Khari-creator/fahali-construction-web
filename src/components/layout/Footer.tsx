@@ -62,14 +62,14 @@ export default function Footer() {
           <ul className="mt-6 space-y-4 text-white/70">
             <li className="flex gap-3">
               <MapPin size={18} className="text-red-500" />
-              <a
-                href="https://www.google.com/maps/search/?api=1&query=Nairobi%2C+Kenya"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline-offset-2 hover:underline"
-              >
-                Nairobi, Kenya
-              </a>
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=Biashara%20Street%2C%20Hison%20Plaza%2C%20Nairobi"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline-offset-2 hover:underline"
+                >
+                  Biashara Street, Hison Plaza, Nairobi
+                </a>
             </li>
 
             <li className="flex gap-3">
