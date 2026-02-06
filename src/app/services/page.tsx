@@ -50,6 +50,7 @@ const services = [
 
 export default function ServicesPage() {
   return (
+    <>
     <section className="bg-neutral-100 py-28 text-neutral-900">
       <div className="max-w-7xl mx-auto px-6">
         {/* Heading */}
@@ -140,6 +141,7 @@ export default function ServicesPage() {
         </motion.div>
       </div>
     </section>
+    </>
   );
 }
 
