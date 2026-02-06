@@ -29,7 +29,7 @@ export default function Footer() {
             Fahali Building & Civil Engineering Ltd
           </h3>
           <p className="mt-6 text-white/70 leading-relaxed max-w-sm">
-            A leading East African design and build company delivering
+            A leading Kenyan design and build company delivering
             architecturally refined residential, commercial, and infrastructure
             projects with precision and integrity.
           </p>

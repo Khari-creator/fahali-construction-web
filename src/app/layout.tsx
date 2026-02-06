@@ -7,11 +7,11 @@ import WhatsAppFloat from "@/components/layout/WhatsAppFloat";
 export const metadata = {
   title: process.env.NEXT_PUBLIC_SITE_NAME || "Fahali Building & Civil Engineering Ltd",
   description:
-    "Fahali Building & Civil Engineering Ltd — construction, design, and project development in East Africa.",
+      "Fahali Building & Civil Engineering Ltd — construction, design, and project development in East Africa.",
   openGraph: {
     title: process.env.NEXT_PUBLIC_SITE_NAME || "Fahali Building & Civil Engineering Ltd",
-    description:
-      "Fahali Building & Civil Engineering Ltd — construction, design, and project development in East Africa.",
+        description:
+          "Fahali Building & Civil Engineering Ltd — construction, design, and project development in Kenya.",
     url: process.env.NEXT_PUBLIC_SITE_URL || "https://fahalibuilders.com",
     siteName: process.env.NEXT_PUBLIC_SITE_NAME || "Fahali Building & Civil Engineering Ltd",
     type: "website",

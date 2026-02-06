@@ -89,7 +89,7 @@ export default function About() {
           <p className="mt-6 text-lg text-black/70 leading-relaxed">
             Fahali Construction Ltd is a full-service design and build company
             delivering residential, commercial, and infrastructure projects
-            across East Africa. Our integrated approach combines architectural
+              across Kenya. Our integrated approach combines architectural
             vision, engineering precision, and disciplined project management.
           </p>
 
