@@ -17,7 +17,7 @@ export default function Footer() {
       {/* Top Divider */}
       <div className="h-[1px] bg-white/10" />
 
-      <div className="max-w-7xl mx-auto px-6 py-24 grid lg:grid-cols-4 gap-16">
+      <div className="max-w-7xl mx-auto px-6 py-24 grid lg:grid-cols-2 gap-16">
         {/* BRAND */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -41,22 +41,7 @@ export default function Footer() {
           </div>
         </motion.div>
 
-        {/* QUICK LINKS */}
-        <FooterColumn title="Company">
-          <FooterLink label="About Us" />
-          <FooterLink label="Services" />
-          <FooterLink label="Projects" />
-          <FooterLink label="Contact" />
-        </FooterColumn>
-
-        {/* SERVICES */}
-        <FooterColumn title="What We Do">
-          <FooterLink label="Architectural Design" />
-          <FooterLink label="Engineering" />
-          <FooterLink label="Construction" />
-          <FooterLink label="Project Management" />
-          <FooterLink label="Turnkey Delivery" />
-        </FooterColumn>
+        {/* removed quick links and services columns per request */}
 
         {/* CONTACT */}
         <motion.div
