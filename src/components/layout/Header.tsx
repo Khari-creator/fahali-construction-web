@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { siteConfig } from "@/config/site";
 
@@ -15,11 +16,15 @@ export default function Header() {
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
 
         {/* Logo */}
-        <Link
-          href="/"
-          className="text-2xl font-extrabold tracking-wide text-brand-accent"
-        >
-          {siteConfig.name}
+        <Link href="/" className="flex items-center">
+          <Image
+            src="/logo.jpg"
+            alt={siteConfig.name}
+            width={160}
+            height={40}
+            className="object-contain"
+            priority
+          />
         </Link>
 
         {/* Desktop Navigation */}
